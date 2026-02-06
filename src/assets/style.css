@@ -1,0 +1,107 @@
+/* =====================================================
+   FUENTES - SECRETO DE LA SACERDOTISA
+   ===================================================== */
+
+/* IMPORTS GOOGLE FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@400;500;600&display=swap');
+
+/* =====================================================
+   VARIABLES GLOBALES
+   ===================================================== */
+:root {
+  --font-title: 'Cinzel', serif;
+  --font-text: 'Cormorant Garamond', serif;
+  --font-ui: 'Montserrat', sans-serif;
+
+  --color-gold: #f3d98b;
+  --color-dark: #120016;
+}
+
+html,
+body,
+#app,
+.v-application {
+  background-color: #120016 !important;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* =====================================================
+   RESET TIPOGRÁFICO BASE
+   ===================================================== */
+body {
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--color-gold);
+  background-color: var(--color-dark);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* =====================================================
+   TÍTULOS
+   ===================================================== */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-title);
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--color-gold);
+}
+
+h1 {
+  font-size: 3.2rem;
+}
+
+h2 {
+  font-size: 2.6rem;
+}
+
+h3 {
+  font-size: 1.4rem;
+}
+
+/* =====================================================
+   TEXTO GENERAL
+   ===================================================== */
+p {
+  font-family: var(--font-text);
+  font-size: 1.05rem;
+  opacity: 0.95;
+}
+
+/* =====================================================
+   LINKS GENERALES
+   ===================================================== */
+a {
+  font-family: var(--font-ui);
+  text-decoration: none;
+  color: inherit;
+}
+
+/* =====================================================
+   BOTONES / CTA
+   ===================================================== */
+button,
+.btn-ritual,
+.cta-btn {
+  font-family: var(--font-ui);
+  letter-spacing: 3px;
+}
+
+/* =====================================================
+   DETALLES PEQUEÑOS
+   ===================================================== */
+.detalle,
+.subtitulo,
+.nav-link {
+  font-family: var(--font-ui);
+  letter-spacing: 3px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
