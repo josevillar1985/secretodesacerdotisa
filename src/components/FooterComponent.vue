@@ -92,8 +92,9 @@ export default {
   methods: {
     async validarAdmin () {
       try {
+        // ACTUALIZADO: Apuntando a la nueva API HTTPS
         const res = await fetch(
-          'http://localhost:8081/api/admin/login?password=' + this.password,
+          'https://api-secretodesacerdotisa.josevillar.com/api/admin/login?password=' + this.password,
           { method: 'POST' }
         )
 
