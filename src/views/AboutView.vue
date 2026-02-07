@@ -81,12 +81,13 @@
 
 <script>
 import FooterComponent from '@/components/FooterComponent.vue'
+import { EventBus } from '@/eventBus'
 
 export default {
   name: 'BlogView',
 
   components: {
-    FooterComponent,
+    FooterComponent
   },
 
   data() {
@@ -96,28 +97,66 @@ export default {
   },
 
   async mounted() {
-    try {
-      const res = await fetch(
-        'https://api-secretodesacerdotisa.josevillar.com/galerias'
-      )
+    await this.cargarEventos()
 
-      const data = await res.json()
+    // 🟢 NUEVA GALERÍA → arriba
+    EventBus.$on('galeria-creada', galeria => {
+      const evento = this.mapGaleria(galeria)
+      this.eventos.unshift(evento)
+    })
 
-      // 🔥 Adaptamos backend → vista
-      this.eventos = data.map(galeria => ({
+    // 🟢 GALERÍA EDITADA → MISMA POSICIÓN
+    EventBus.$on('galeria-editada', galeria => {
+      const index = this.eventos.findIndex(e => e.id === galeria.id)
+      if (index !== -1) {
+        this.eventos.splice(index, 1, this.mapGaleria(galeria))
+      }
+    })
+
+    // 🟥 GALERÍA ELIMINADA
+    EventBus.$on('galeria-eliminada', id => {
+      this.eventos = this.eventos.filter(e => e.id !== id)
+    })
+  },
+
+  beforeDestroy() {
+    EventBus.$off('galeria-creada')
+    EventBus.$off('galeria-editada')
+    EventBus.$off('galeria-eliminada')
+  },
+
+  methods: {
+    async cargarEventos() {
+      try {
+        const res = await fetch(
+          'https://api-secretodesacerdotisa.josevillar.com/galerias'
+        )
+
+        const data = await res.json()
+
+        // 🔥 solo aquí ordenamos
+        this.eventos = data
+          .reverse()
+          .map(this.mapGaleria)
+
+      } catch (e) {
+        console.error('Error cargando eventos', e)
+      }
+    },
+
+    mapGaleria(galeria) {
+      return {
         id: galeria.id,
         titulo: galeria.titulo,
         fecha: galeria.fecha,
         descripcion: galeria.descripcion,
         imagenes: galeria.fotos.map(f => f.imagen)
-      }))
-
-    } catch (e) {
-      console.error('Error cargando eventos', e)
+      }
     }
   }
 }
 </script>
+
 
 
 <style scoped>

@@ -40,6 +40,7 @@ public class GaleriaController {
     }
 
     // ================= PUT =================
+    // ================= PUT =================
     @PutMapping("/{id}")
     public ResponseEntity<GaleriaDTO> update(
             @PathVariable Long id,
@@ -48,17 +49,17 @@ public class GaleriaController {
         return repository.findById(id)
                 .map(existing -> {
 
-                    // 🔹 convertir DTO a entidad
-                    Galeria actualizada = mapper.toEntity(dto);
-                    actualizada.setId(id);
+                    // 🔥 solo campos simples
+                    existing.setTitulo(dto.getTitulo());
+                    existing.setDescripcion(dto.getDescripcion());
+                    existing.setFecha(dto.getFecha());
 
-                    // 🔹 guardar (cascade se encarga de fotos)
-                    Galeria saved = repository.save(actualizada);
-
+                    Galeria saved = repository.save(existing);
                     return ResponseEntity.ok(mapper.toDto(saved));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+
 
     // ================= DELETE =================
     @DeleteMapping("/{id}")

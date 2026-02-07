@@ -104,6 +104,8 @@
 </template>
 
 <script>
+import { EventBus } from '@/eventBus'
+
 const CLOUD_NAME = 'deknkhbmr'
 const UPLOAD_PRESET = 'galerias_unsigned'
 
@@ -125,14 +127,27 @@ export default {
 
   mounted() {
     this.cargarGalerias()
+
+    // 🔔 solo para NUEVAS galerías
+    EventBus.$on('galeria-actualizada', galeriaCreada => {
+      // la ponemos ARRIBA sin tocar el resto
+      this.galerias.unshift(galeriaCreada)
+    })
+  },
+
+  beforeDestroy() {
+    EventBus.$off('galeria-actualizada')
   },
 
   methods: {
     async cargarGalerias() {
+      this.cargando = true
       const res = await fetch(
         'https://api-secretodesacerdotisa.josevillar.com/galerias'
       )
-      this.galerias = await res.json()
+
+      const data = await res.json()
+      this.galerias = data.reverse()
       this.cargando = false
     },
 
@@ -142,7 +157,6 @@ export default {
     },
 
     abrirEditar(g) {
-      // copia profunda para no mutar directamente
       this.galeriaEditada = JSON.parse(JSON.stringify(g))
       this.dialogEditar = true
     },
@@ -204,15 +218,18 @@ export default {
         }
       )
 
+      // 🔥 sustituimos SOLO la editada
       const i = this.galerias.findIndex(
         g => g.id === this.galeriaEditada.id
       )
       this.galerias.splice(i, 1, this.galeriaEditada)
+
       this.cerrarDialogos()
     }
   }
 }
 </script>
+
 
 <style scoped>
 .list-admin {
