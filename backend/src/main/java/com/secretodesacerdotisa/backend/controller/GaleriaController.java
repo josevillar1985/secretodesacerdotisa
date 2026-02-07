@@ -4,7 +4,9 @@ import com.secretodesacerdotisa.backend.dto.GaleriaDTO;
 import com.secretodesacerdotisa.backend.mapper.GaleriaMapper;
 import com.secretodesacerdotisa.backend.model.Galeria;
 import com.secretodesacerdotisa.backend.repository.GaleriaRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +22,7 @@ public class GaleriaController {
         this.mapper = mapper;
     }
 
+    // ================= GET =================
     @GetMapping
     public List<GaleriaDTO> getAll() {
         return repository.findAll()
@@ -28,6 +31,7 @@ public class GaleriaController {
                 .collect(Collectors.toList());
     }
 
+    // ================= POST =================
     @PostMapping
     public GaleriaDTO create(@RequestBody GaleriaDTO dto) {
         Galeria galeria = mapper.toEntity(dto);
@@ -35,6 +39,28 @@ public class GaleriaController {
         return mapper.toDto(saved);
     }
 
+    // ================= PUT =================
+    @PutMapping("/{id}")
+    public ResponseEntity<GaleriaDTO> update(
+            @PathVariable Long id,
+            @RequestBody GaleriaDTO dto
+    ) {
+        return repository.findById(id)
+                .map(existing -> {
+
+                    // 🔹 convertir DTO a entidad
+                    Galeria actualizada = mapper.toEntity(dto);
+                    actualizada.setId(id);
+
+                    // 🔹 guardar (cascade se encarga de fotos)
+                    Galeria saved = repository.save(actualizada);
+
+                    return ResponseEntity.ok(mapper.toDto(saved));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // ================= DELETE =================
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         if (!repository.existsById(id)) {
