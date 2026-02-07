@@ -5,7 +5,6 @@ import com.secretodesacerdotisa.backend.mapper.GaleriaMapper;
 import com.secretodesacerdotisa.backend.model.Fotos;
 import com.secretodesacerdotisa.backend.model.Galeria;
 import com.secretodesacerdotisa.backend.repository.GaleriaRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +32,7 @@ public class GaleriaController {
                 .collect(Collectors.toList());
     }
 
+    // ================= POST =================
     @PostMapping
     public GaleriaDTO create(@RequestBody GaleriaDTO dto) {
 
@@ -40,18 +40,15 @@ public class GaleriaController {
 
         // 🔥 asegurar relación bidireccional
         if (galeria.getFotos() != null) {
-            galeria.getFotos().forEach(foto -> foto.setGaleria(galeria));
+            galeria.getFotos().forEach(f -> f.setGaleria(galeria));
         }
 
         Galeria saved = repository.save(galeria);
         return mapper.toDto(saved);
     }
 
-
-    // ================= PUT =================
     // ================= PUT =================
     @PutMapping("/{id}")
-    @Transactional
     public ResponseEntity<GaleriaDTO> update(
             @PathVariable Long id,
             @RequestBody GaleriaDTO dto
@@ -59,21 +56,20 @@ public class GaleriaController {
         return repository.findById(id)
                 .map(existing -> {
 
-                    // 🔹 campos simples
+                    // 🟢 campos simples
                     existing.setTitulo(dto.getTitulo());
                     existing.setDescripcion(dto.getDescripcion());
                     existing.setFecha(dto.getFecha());
 
-                    // 🔥 sincronizar fotos (estado final = admin)
-                    existing.getFotos().clear();
-
+                    // 🟢 fotos (reemplazo total)
                     if (dto.getFotos() != null) {
-                        dto.getFotos().forEach(fotoDto -> {
-                            Fotos foto = new Fotos();
-                            foto.setImagen(fotoDto.getImagen());
-                            foto.setGaleria(existing);
-                            existing.getFotos().add(foto);
-                        });
+
+                        existing.getFotos().clear();
+
+                        List<Fotos> nuevasFotos = mapper.toEntity(dto).getFotos();
+                        nuevasFotos.forEach(f -> f.setGaleria(existing));
+
+                        existing.getFotos().addAll(nuevasFotos);
                     }
 
                     Galeria saved = repository.save(existing);
@@ -81,9 +77,6 @@ public class GaleriaController {
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
-
-
-
 
     // ================= DELETE =================
     @DeleteMapping("/{id}")

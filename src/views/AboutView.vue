@@ -18,6 +18,7 @@
               cycle
               hide-delimiters
               show-arrows
+              :interval="3000"
             >
               <v-carousel-item
                 v-for="(img, i) in evento.imagenes"
@@ -32,56 +33,18 @@
           <div class="contenido">
             <span class="fecha">{{ evento.fecha }}</span>
             <h2>{{ evento.titulo }}</h2>
-            <p class="descripcion">
-              {{ evento.descripcion }}
-            </p>
+            <p class="descripcion">{{ evento.descripcion }}</p>
           </div>
         </article>
       </div>
     </section>
 
-    <!-- FOOTER -->
-    <FooterComponent />
-  </div>
-</template>
-
-<template>
-  <div class="pagina">
-    <section class="blog">
-      <header class="blog-header">
-        <h1>Blog & Eventos</h1>
-        <p>Eventos, rituales y encuentros vividos</p>
-      </header>
-
-      <div class="eventos">
-        <article v-for="evento in eventos" :key="evento.id" class="evento">
-          <div class="media">
-            <v-carousel class="carousel" cycle hide-delimiters show-arrows="always" :interval="3000">
-              <v-carousel-item v-for="(img, i) in evento.imagenes" :key="i" class="slide">
-                <img :src="img" :alt="evento.titulo" />
-              </v-carousel-item>
-            </v-carousel>
-          </div>
-
-          <div class="contenido">
-            <span class="fecha">{{ evento.fecha }}</span>
-            <h2>{{ evento.titulo }}</h2>
-            <p class="descripcion">
-              {{ evento.descripcion }}
-            </p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
     <FooterComponent />
   </div>
 </template>
 
 <script>
 import FooterComponent from '@/components/FooterComponent.vue'
-import { EventBus } from '@/eventBus'
 
 export default {
   name: 'BlogView',
@@ -98,31 +61,6 @@ export default {
 
   async mounted() {
     await this.cargarEventos()
-
-    // 🟢 NUEVA GALERÍA → arriba
-    EventBus.$on('galeria-creada', galeria => {
-      const evento = this.mapGaleria(galeria)
-      this.eventos.unshift(evento)
-    })
-
-    // 🟢 GALERÍA EDITADA → MISMA POSICIÓN
-    EventBus.$on('galeria-editada', galeria => {
-      const index = this.eventos.findIndex(e => e.id === galeria.id)
-      if (index !== -1) {
-        this.eventos.splice(index, 1, this.mapGaleria(galeria))
-      }
-    })
-
-    // 🟥 GALERÍA ELIMINADA
-    EventBus.$on('galeria-eliminada', id => {
-      this.eventos = this.eventos.filter(e => e.id !== id)
-    })
-  },
-
-  beforeDestroy() {
-    EventBus.$off('galeria-creada')
-    EventBus.$off('galeria-editada')
-    EventBus.$off('galeria-eliminada')
   },
 
   methods: {
@@ -134,23 +72,21 @@ export default {
 
         const data = await res.json()
 
-        // 🔥 solo aquí ordenamos
+        // ✅ ORDEN CORRECTO: el último creado sale el primero
         this.eventos = data
-          .reverse()
-          .map(this.mapGaleria)
+          .sort((a, b) => b.id - a.id)
+          .map(g => ({
+            id: g.id,
+            titulo: g.titulo,
+            fecha: g.fecha,
+            descripcion: g.descripcion,
+            imagenes: Array.isArray(g.fotos)
+              ? g.fotos.map(f => f.imagen)
+              : []
+          }))
 
       } catch (e) {
         console.error('Error cargando eventos', e)
-      }
-    },
-
-    mapGaleria(galeria) {
-      return {
-        id: galeria.id,
-        titulo: galeria.titulo,
-        fecha: galeria.fecha,
-        descripcion: galeria.descripcion,
-        imagenes: galeria.fotos.map(f => f.imagen)
       }
     }
   }

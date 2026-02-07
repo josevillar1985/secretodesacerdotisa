@@ -121,71 +121,178 @@ export default {
 </script>
 
 <style scoped>
-.footer { position: relative; background:#0b000d; color:#ffd36a; padding:120px 10% 40px }
-.footer-wrapper { display:grid; grid-template-columns:2fr 1fr 1fr; gap:80px }
-.marca h3 { font-size:1.6rem; margin-bottom:20px }
-.bloque { display:flex; flex-direction:column; gap:14px }
-.bottom { margin-top:60px; display:flex; justify-content:space-between; opacity:.6 }
-
-.admin-trigger {
-  position:absolute;
-  bottom:15px;
-  right:20px;
-  background:transparent;
-  border:none;
-  color:rgba(255,211,106,.3);
-  font-size:18px;
-  cursor:pointer;
-  z-index: 10;
+.footer {
+  position: relative;
+  background: #0b000d;
+  color: #ffd36a;
+  padding: 120px 10% 40px;
 }
 
-.admin-panel {
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.75);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
+/* ===== WRAPPER ===== */
+.footer-wrapper {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 80px;
 }
 
-.admin-box {
-  background:#120016;
-  padding:30px;
-  border:1px solid rgba(255,211,106,.4);
-  text-align:center;
+/* ===== MARCA ===== */
+.marca h3 {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
 }
 
-.admin-box input {
-  width:100%;
-  padding:10px;
-  margin-bottom:15px;
-  background:transparent;
-  border:1px solid rgba(255,211,106,.4);
-  color:#ffd36a;
+.marca p {
+  line-height: 1.7;
+  opacity: 0.9;
 }
 
-.admin-box button {
-  width:100%;
-  padding:10px;
-  margin-top:8px;
-  background:rgba(255,211,106,.2);
-  border:none;
-  color:#ffd36a;
-  cursor:pointer;
+/* ===== BLOQUES ===== */
+.bloque {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.cancel { background:transparent; opacity:.6 }
-.error { color:#e57373; margin-top:10px }
+.titulo {
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
 
+/* ===== CONTACTOS ===== */
 .contacto {
   color: #ffd36a;
   text-decoration: none;
   opacity: 0.9;
   transition: opacity 0.3s ease;
+  word-break: break-word;
 }
 
 .contacto:hover {
   opacity: 1;
 }
+
+/* ===== MENSAJE ===== */
+.mensaje {
+  opacity: 0.85;
+  line-height: 1.6;
+}
+
+/* ===== FOOTER BOTTOM ===== */
+.bottom {
+  margin-top: 60px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  opacity: 0.6;
+  flex-wrap: wrap;
+}
+
+/* ===== ADMIN DOT ===== */
+.admin-trigger {
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 211, 106, 0.3);
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* ===== ADMIN MODAL ===== */
+.admin-panel {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.admin-box {
+  background: #120016;
+  padding: 30px;
+  border: 1px solid rgba(255, 211, 106, 0.4);
+  text-align: center;
+  max-width: 320px;
+  width: 90%;
+}
+
+.admin-box input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  background: transparent;
+  border: 1px solid rgba(255, 211, 106, 0.4);
+  color: #ffd36a;
+}
+
+.admin-box button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  background: rgba(255, 211, 106, 0.2);
+  border: none;
+  color: #ffd36a;
+  cursor: pointer;
+}
+
+.cancel {
+  background: transparent;
+  opacity: 0.6;
+}
+
+.error {
+  color: #e57373;
+  margin-top: 10px;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+/* 📱 MÓVIL */
+@media (max-width: 768px) {
+  .footer {
+    padding: 80px 6% 40px;
+    text-align: center;
+  }
+
+  .footer-wrapper {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .bloque {
+    align-items: center;
+  }
+
+  .marca p,
+  .mensaje {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+}
+
+/* 📱 MUY PEQUEÑO */
+@media (max-width: 420px) {
+  .marca h3 {
+    font-size: 1.4rem;
+  }
+
+  .admin-trigger {
+    right: 10px;
+    bottom: 10px;
+  }
+}
+
 </style>

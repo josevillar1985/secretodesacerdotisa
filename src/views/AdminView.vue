@@ -48,7 +48,13 @@
           <label class="btn-subir">
             <v-icon class="mr-2" color="#120016">mdi-camera-plus</v-icon>
             Seleccionar Fotos
-            <input type="file" multiple accept="image/*" @change="manejarSubida" hidden />
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              hidden
+              @change="manejarSubida"
+            />
           </label>
 
           <p class="count" v-if="nuevaGaleria.fotos.length > 0">
@@ -62,7 +68,10 @@
               class="foto-item"
             >
               <img :src="f.imagen" />
-              <button class="remove-btn" @click="nuevaGaleria.fotos.splice(index, 1)">
+              <button
+                class="remove-btn"
+                @click="nuevaGaleria.fotos.splice(index, 1)"
+              >
                 ✕
               </button>
             </div>
@@ -77,6 +86,8 @@
           >
             {{ cargando ? 'Elevando plegaria...' : 'Manifestar en el Blog' }}
           </button>
+
+          <!-- 🔴 ALERTA SIMPLE, COMO ESTABA -->
           <transition name="fade">
             <p v-if="mensaje" :class="['status', mensaje.tipo]">
               {{ mensaje.texto }}
@@ -85,6 +96,7 @@
         </div>
       </div>
     </section>
+
     <ListAdmin />
     <FooterComponent />
   </div>
@@ -92,7 +104,7 @@
 
 <script>
 import FooterComponent from '@/components/FooterComponent.vue'
-import ListAdmin from '@/components/ListAdmin.vue';
+import ListAdmin from '@/components/ListAdmin.vue'
 import { EventBus } from '@/eventBus'
 
 const CLOUD_NAME = 'deknkhbmr'
@@ -122,7 +134,6 @@ export default {
       this.$router.push('/')
     },
 
-    // 🔥 SUBIDA A CLOUDINARY (URLs, NO base64)
     async manejarSubida(event) {
       const files = event.target.files
       if (!files.length) return
@@ -149,7 +160,7 @@ export default {
           const data = await res.json()
 
           if (!data.secure_url) {
-            throw new Error('Error subiendo imagen a Cloudinary')
+            throw new Error()
           }
 
           this.nuevaGaleria.fotos.push({
@@ -162,7 +173,6 @@ export default {
       }
     },
 
-    // 🔥 POST FINAL (solo URLs, backend feliz)
     async guardarTodo() {
       if (!this.nuevaGaleria.titulo || this.nuevaGaleria.fotos.length === 0) {
         this.mostrarMensaje('Faltan datos o fotos', 'error')
@@ -176,16 +186,12 @@ export default {
           'https://api-secretodesacerdotisa.josevillar.com/galerias',
           {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.nuevaGaleria)
           }
         )
 
-        if (!res.ok) {
-          throw new Error('Error al guardar galería')
-        }
+        if (!res.ok) throw new Error()
 
         this.mostrarMensaje('Publicado con éxito', 'success')
         this.nuevaGaleria = {
@@ -196,7 +202,7 @@ export default {
         }
 
       } catch (e) {
-        this.mostrarMensaje(e.message, 'error')
+        this.mostrarMensaje('Error al guardar galería', 'error')
       } finally {
         this.cargando = false
       }

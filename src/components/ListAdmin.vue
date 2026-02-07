@@ -7,7 +7,8 @@
       No hay galerías
     </div>
 
-    <div class="grid">
+    <!-- LISTA EN COLUMNA -->
+    <div class="lista">
       <div v-for="galeria in galerias" :key="galeria.id" class="celda">
         <h3 class="titulo-galeria">{{ galeria.titulo }}</h3>
         <p class="fecha">{{ galeria.fecha }}</p>
@@ -35,12 +36,10 @@
       </div>
     </div>
 
-    <!-- DIALOG ELIMINAR -->
+    <!-- ================= ELIMINAR ================= -->
     <div v-if="dialogEliminar" class="overlay">
       <div class="dialog">
-        <p>
-          ¿Eliminar <b>{{ galeriaSeleccionada.titulo }}</b>?
-        </p>
+        <p>¿Eliminar <b>{{ galeriaSeleccionada.titulo }}</b>?</p>
 
         <div class="dialog-acciones">
           <button class="btn cancelar" @click="cerrarDialogos">
@@ -53,7 +52,7 @@
       </div>
     </div>
 
-    <!-- DIALOG EDITAR -->
+    <!-- ================= EDITAR ================= -->
     <div v-if="dialogEditar" class="overlay">
       <div class="dialog">
         <h3>Editar galería</h3>
@@ -65,7 +64,7 @@
           placeholder="Descripción"
         ></textarea>
 
-        <!-- FOTOS EDITAR -->
+        <!-- FOTOS -->
         <div class="fotos-editar">
           <div class="fotos">
             <div
@@ -74,7 +73,9 @@
               class="foto-edit"
             >
               <img :src="foto.imagen" />
-              <button @click="eliminarFotoEditada(i)">✕</button>
+              <button class="foto-remove" @click="eliminarFotoEditada(i)">
+                ✕
+              </button>
             </div>
           </div>
 
@@ -104,8 +105,6 @@
 </template>
 
 <script>
-import { EventBus } from '@/eventBus'
-
 const CLOUD_NAME = 'deknkhbmr'
 const UPLOAD_PRESET = 'galerias_unsigned'
 
@@ -116,10 +115,8 @@ export default {
     return {
       galerias: [],
       cargando: true,
-
       dialogEliminar: false,
       dialogEditar: false,
-
       galeriaSeleccionada: null,
       galeriaEditada: null
     }
@@ -127,16 +124,6 @@ export default {
 
   mounted() {
     this.cargarGalerias()
-
-    // 🔔 solo para NUEVAS galerías
-    EventBus.$on('galeria-actualizada', galeriaCreada => {
-      // la ponemos ARRIBA sin tocar el resto
-      this.galerias.unshift(galeriaCreada)
-    })
-  },
-
-  beforeDestroy() {
-    EventBus.$off('galeria-actualizada')
   },
 
   methods: {
@@ -145,7 +132,6 @@ export default {
       const res = await fetch(
         'https://api-secretodesacerdotisa.josevillar.com/galerias'
       )
-
       const data = await res.json()
       this.galerias = data.reverse()
       this.cargando = false
@@ -173,7 +159,6 @@ export default {
         `https://api-secretodesacerdotisa.josevillar.com/galerias/${this.galeriaSeleccionada.id}`,
         { method: 'DELETE' }
       )
-
       this.galerias = this.galerias.filter(
         g => g.id !== this.galeriaSeleccionada.id
       )
@@ -191,10 +176,7 @@ export default {
 
         const res = await fetch(
           `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-          {
-            method: 'POST',
-            body: formData
-          }
+          { method: 'POST', body: formData }
         )
 
         const data = await res.json()
@@ -218,7 +200,6 @@ export default {
         }
       )
 
-      // 🔥 sustituimos SOLO la editada
       const i = this.galerias.findIndex(
         g => g.id === this.galeriaEditada.id
       )
@@ -230,88 +211,95 @@ export default {
 }
 </script>
 
-
 <style scoped>
 .list-admin {
   margin-top: 80px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .titulo-principal {
   text-align: center;
   color: #ffd36a;
   letter-spacing: 4px;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
+  font-size: 2rem;
 }
 
 .estado {
   text-align: center;
   opacity: 0.7;
+  font-size: 1rem;
 }
 
-/* GRID */
+/* ===== LISTA EN COLUMNA (UNA ENCIMA DE OTRA) ===== */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
-/* CELDA */
+/* ===== TARJETA GRANDE ===== */
 .celda {
-  background: rgba(255, 211, 106, 0.04);
-  border: 1px solid rgba(255, 211, 106, 0.18);
-  border-radius: 20px;
-  padding: 26px;
+  background: rgba(255, 211, 106, 0.06);
+  border: 1px solid rgba(255, 211, 106, 0.25);
+  border-radius: 26px;
+  padding: 40px;
   text-align: center;
 }
 
+/* ===== TEXTO ===== */
 .titulo-galeria {
-  font-size: 1.05rem;
-  margin-bottom: 6px;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
 }
 
 .fecha {
-  font-size: 0.8rem;
+  font-size: 1rem;
   opacity: 0.7;
-  margin-bottom: 16px;
+  margin-bottom: 22px;
 }
 
-/* FOTOS */
+/* ===== FOTOS ===== */
 .fotos {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 14px;
   flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 
 .fotos img {
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
+  width: 90px;
+  height: 90px;
+  border-radius: 16px;
   object-fit: cover;
-  border: 1px solid rgba(255, 211, 106, 0.45);
+  border: 1px solid rgba(255, 211, 106, 0.5);
 }
 
 .extra {
-  font-size: 0.75rem;
-  opacity: 0.6;
+  display: block;
   margin-top: 6px;
+  font-size: 0.9rem;
+  opacity: 0.7;
 }
 
-/* ACCIONES */
+/* ===== BOTONES ===== */
 .acciones {
   display: flex;
   justify-content: center;
-  gap: 14px;
-  margin-top: 20px;
+  gap: 24px;
+  margin-top: 26px;
 }
 
 .btn {
-  padding: 7px 20px;
+  padding: 12px 34px;
   border-radius: 40px;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   letter-spacing: 2px;
-  border: none;
   cursor: pointer;
+  border: none;
 }
 
 .editar {
@@ -331,7 +319,7 @@ export default {
   color: #ffd36a;
 }
 
-/* OVERLAY SCROLLABLE */
+/* ===== OVERLAY ===== */
 .overlay {
   position: fixed;
   inset: 0;
@@ -341,34 +329,39 @@ export default {
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
-  padding: 60px 0;
+  padding: 80px 0;
 }
 
-/* DIALOG */
+/* ===== DIALOG ===== */
 .dialog {
-  width: 360px;
+  width: 460px;
   background: #120016;
-  border-radius: 22px;
-  border: 1px solid rgba(255, 211, 106, 0.25);
-  padding: 26px;
-  margin-bottom: 60px;
+  border-radius: 26px;
+  border: 1px solid rgba(255, 211, 106, 0.35);
+  padding: 32px;
+}
+
+.dialog h3 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .dialog input,
 .dialog textarea {
   width: 100%;
-  margin-bottom: 12px;
-  padding: 10px;
+  margin-bottom: 14px;
+  padding: 14px;
+  font-size: 0.95rem;
   background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 211, 106, 0.25);
+  border: 1px solid rgba(255, 211, 106, 0.3);
   color: white;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
-/* EDITAR FOTOS */
+/* ===== EDITAR FOTOS ===== */
 .fotos-editar {
   text-align: center;
-  margin: 15px 0;
+  margin: 20px 0;
 }
 
 .foto-edit {
@@ -376,32 +369,33 @@ export default {
 }
 
 .foto-edit img {
-  width: 58px;
-  height: 58px;
-  border-radius: 12px;
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
   object-fit: cover;
 }
 
 .foto-edit button {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  width: 18px;
-  height: 18px;
+  top: -8px;
+  right: -8px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: #ff5252;
   color: white;
   border: none;
-  font-size: 0.65rem;
   cursor: pointer;
+  font-size: 0.75rem;
 }
 
+/* ===== BOTÓN SUBIR ===== */
 .btn-subir-editar {
   display: inline-block;
-  margin-top: 12px;
-  font-size: 0.7rem;
+  margin-top: 18px;
+  font-size: 0.8rem;
   letter-spacing: 2px;
-  padding: 6px 18px;
+  padding: 10px 26px;
   border-radius: 30px;
   background: transparent;
   border: 1px dashed #ffd36a;
@@ -409,8 +403,11 @@ export default {
   cursor: pointer;
 }
 
+/* ===== ACCIONES DIALOG ===== */
 .dialog-acciones {
   display: flex;
   justify-content: space-between;
+  margin-top: 25px;
 }
+
 </style>
