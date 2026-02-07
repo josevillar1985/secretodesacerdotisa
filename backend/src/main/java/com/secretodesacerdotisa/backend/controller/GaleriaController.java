@@ -31,13 +31,20 @@ public class GaleriaController {
                 .collect(Collectors.toList());
     }
 
-    // ================= POST =================
     @PostMapping
     public GaleriaDTO create(@RequestBody GaleriaDTO dto) {
+
         Galeria galeria = mapper.toEntity(dto);
+
+        // 🔥 asegurar relación bidireccional
+        if (galeria.getFotos() != null) {
+            galeria.getFotos().forEach(foto -> foto.setGaleria(galeria));
+        }
+
         Galeria saved = repository.save(galeria);
         return mapper.toDto(saved);
     }
+
 
     // ================= PUT =================
     // ================= PUT =================
