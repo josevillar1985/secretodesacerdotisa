@@ -2,8 +2,10 @@ package com.secretodesacerdotisa.backend.controller;
 
 import com.secretodesacerdotisa.backend.dto.GaleriaDTO;
 import com.secretodesacerdotisa.backend.mapper.GaleriaMapper;
+import com.secretodesacerdotisa.backend.model.Fotos;
 import com.secretodesacerdotisa.backend.model.Galeria;
 import com.secretodesacerdotisa.backend.repository.GaleriaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +51,7 @@ public class GaleriaController {
     // ================= PUT =================
     // ================= PUT =================
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity<GaleriaDTO> update(
             @PathVariable Long id,
             @RequestBody GaleriaDTO dto
@@ -56,16 +59,30 @@ public class GaleriaController {
         return repository.findById(id)
                 .map(existing -> {
 
-                    // 🔥 solo campos simples
+                    // 🔹 campos simples
                     existing.setTitulo(dto.getTitulo());
                     existing.setDescripcion(dto.getDescripcion());
                     existing.setFecha(dto.getFecha());
+
+                    // 🔥 sincronizar fotos (estado final = admin)
+                    existing.getFotos().clear();
+
+                    if (dto.getFotos() != null) {
+                        dto.getFotos().forEach(fotoDto -> {
+                            Fotos foto = new Fotos();
+                            foto.setImagen(fotoDto.getImagen());
+                            foto.setGaleria(existing);
+                            existing.getFotos().add(foto);
+                        });
+                    }
 
                     Galeria saved = repository.save(existing);
                     return ResponseEntity.ok(mapper.toDto(saved));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+
+
 
 
     // ================= DELETE =================

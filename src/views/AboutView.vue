@@ -17,7 +17,7 @@
               class="carousel"
               cycle
               hide-delimiters
-              show-arrows="always"
+              show-arrows
             >
               <v-carousel-item
                 v-for="(img, i) in evento.imagenes"
