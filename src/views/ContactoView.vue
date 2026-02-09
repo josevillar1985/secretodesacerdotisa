@@ -11,7 +11,7 @@
             <p>Escríbeme o llámame directamente</p>
 
             <div class="hero-acciones">
-              <a href="tel:+34600000000" class="btn llamar">
+              <a href="tel:+34675096928" class="btn llamar">
                 <svg viewBox="0 0 24 24" class="icon">
                   <path
                     fill="currentColor"
@@ -25,7 +25,7 @@
               </a>
 
               <a
-                href="https://wa.me/34600000000"
+                href="https://wa.me/34675096928"
                 target="_blank"
                 rel="noopener"
                 class="btn whatsapp"

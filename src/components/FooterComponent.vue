@@ -12,9 +12,9 @@
 
       <div class="bloque">
         <span class="titulo">Contacto directo</span>
-        <a href="tel:+34600000000" class="contacto">+34 600 000 000</a>
-        <a href="https://wa.me/34600000000" target="_blank" class="contacto">WhatsApp</a>
-        <a href="mailto:contacto@secretodesacerdotisa.com" class="contacto">
+        <a href="tel:+34675096928" class="contacto">+34 675 09 69 28</a>
+        <a href="https://wa.me/34675096928" target="_blank" class="contacto">WhatsApp</a>
+        <a href="Secretodesacerdotisa@gmail.com" class="contacto">
           contacto@secretodesacerdotisa.com
         </a>
       </div>

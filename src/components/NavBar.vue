@@ -39,7 +39,7 @@
 
       <div class="acciones">
         <a
-          href="https://wa.me/34600000000"
+          href="https://wa.me/34675096928"
           target="_blank"
           rel="noopener"
           class="accion whatsapp"
@@ -48,7 +48,7 @@
         </a>
 
         <a
-          href="tel:+34600000000"
+          href="tel:+34675096928"
           class="accion llamar"
         >
           <v-icon class="icono">mdi-phone</v-icon>
