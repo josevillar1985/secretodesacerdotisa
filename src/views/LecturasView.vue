@@ -84,6 +84,7 @@ export default {
 <style scoped>
 .pagina {
   background: #0d0013;
+  overflow-x: hidden;
 }
 
 /* ===== HERO ===== */
@@ -120,7 +121,7 @@ export default {
   position: relative;
   z-index: 2;
   max-width: 820px;
-  padding: 0 8%;
+  padding: 0 6%;
   text-align: center;
   color: #f6dc91;
 }
@@ -140,7 +141,7 @@ export default {
 
 /* ===== CARDS ===== */
 .cards {
-  padding: 160px 8% 200px;
+  padding: 140px 8% 180px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 90px;
@@ -211,10 +212,63 @@ export default {
   color: #0d0013;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 1000px) {
+/* =======================
+   TABLET
+======================= */
+@media (max-width: 1200px) {
+  .hero h1 {
+    font-size: 3.2rem;
+    letter-spacing: 5px;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px;
+    padding: 120px 6% 160px;
+  }
+}
+
+/* =======================
+   MÓVIL
+======================= */
+@media (max-width: 768px) {
+  .hero {
+    height: calc(100svh - 96px);
+  }
+
+  .hero h1 {
+    font-size: 2.1rem;
+    letter-spacing: 3px;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
   .cards {
     grid-template-columns: 1fr;
+    padding: 100px 20px 140px;
+    gap: 48px;
+  }
+
+  .card {
+    height: auto;
+    min-height: 420px;
+  }
+
+  .card-content {
+    padding: 40px 32px;
+  }
+
+  .card h2 {
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+  }
+
+  .card button {
+    padding: 12px 32px;
+    font-size: 0.85rem;
   }
 }
 </style>
+

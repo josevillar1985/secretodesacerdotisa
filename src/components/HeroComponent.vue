@@ -39,7 +39,7 @@ export default {
 .hero {
   position: relative;
   width: 100%;
-  height: calc(100vh - 120px); /* altura visible real */
+  height: calc(100vh - 120px); /* desktop */
   overflow: hidden;
   z-index: 1;
 }
@@ -75,6 +75,7 @@ export default {
   justify-content: center;
   text-align: center;
   color: #f3d98b;
+  padding: 0 20px; /* seguridad móvil */
 }
 
 .hero-content h1 {
@@ -97,11 +98,7 @@ export default {
   letter-spacing: 3px;
   text-transform: uppercase;
   color: #2b0a3d;
-  background: linear-gradient(
-    135deg,
-    #ffd36a,
-    #f3d98b
-  );
+  background: linear-gradient(135deg, #ffd36a, #f3d98b);
   border-radius: 50px;
   text-decoration: none;
   font-weight: 600;
@@ -114,10 +111,8 @@ export default {
 .cta-btn::before {
   content: '';
   position: absolute;
-  top: 0;
+  inset: 0;
   left: -100%;
-  width: 100%;
-  height: 100%;
   background: linear-gradient(
     120deg,
     transparent,
@@ -127,7 +122,6 @@ export default {
   transition: left 0.5s ease;
 }
 
-/* hover */
 .cta-btn:hover::before {
   left: 100%;
 }
@@ -136,4 +130,45 @@ export default {
   transform: translateY(-3px);
   box-shadow: 0 10px 30px rgba(255, 211, 106, 0.6);
 }
+
+/* =======================
+   TABLET
+======================= */
+@media (max-width: 1000px) {
+  .hero {
+    height: calc(100svh - 96px); /* móvil real, sin barra navegador */
+  }
+
+  .hero-content h1 {
+    font-size: 2.4rem;
+    letter-spacing: 3px;
+  }
+
+  .hero-content p {
+    font-size: 1.05rem;
+    margin-bottom: 28px;
+  }
+}
+
+/* =======================
+   MÓVIL
+======================= */
+@media (max-width: 600px) {
+  .hero-content h1 {
+    font-size: 1.9rem;
+    letter-spacing: 2px;
+  }
+
+  .hero-content p {
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+
+  .cta-btn {
+    padding: 12px 36px;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+  }
+}
 </style>
+

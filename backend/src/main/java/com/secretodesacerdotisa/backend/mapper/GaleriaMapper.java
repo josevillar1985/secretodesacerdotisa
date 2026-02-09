@@ -1,9 +1,6 @@
 package com.secretodesacerdotisa.backend.mapper;
-
 import com.secretodesacerdotisa.backend.dto.GaleriaDTO;
-import com.secretodesacerdotisa.backend.dto.FotosDTO;
 import com.secretodesacerdotisa.backend.model.Galeria;
-import com.secretodesacerdotisa.backend.model.Fotos;
 import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 

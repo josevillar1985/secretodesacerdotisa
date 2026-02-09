@@ -93,17 +93,20 @@ export default {
 .pagina {
   background: #0d0013;
   color: #f6dc91;
+  overflow-x: hidden;
 }
 
+/* ===== HERO ===== */
 .hero {
   position: relative;
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 120px); /* desktop */
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
 
+/* Fondo */
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -123,16 +126,18 @@ export default {
   );
 }
 
+/* ===== CAJA PRINCIPAL ===== */
 .hero-box {
   position: relative;
   z-index: 1;
-  width: min(1100px, 90%);
+  width: min(1100px, 92%);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
   align-items: center;
 }
 
+/* ===== TEXTO ===== */
 .hero-text h1 {
   font-family: var(--font-title);
   font-size: 3.5rem;
@@ -146,16 +151,18 @@ export default {
   margin-bottom: 40px;
 }
 
+/* ===== ACCIONES ===== */
 .hero-acciones {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap; /* 🔑 evita overflow */
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 36px;
+  padding: 16px 32px;
   border: 1px solid #f6dc91;
   color: #f6dc91;
   text-decoration: none;
@@ -165,8 +172,8 @@ export default {
 }
 
 .icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .llamar:hover {
@@ -184,6 +191,7 @@ export default {
   color: #0d0013;
 }
 
+/* ===== FORMULARIO ===== */
 .formulario {
   background: rgba(18, 0, 28, 0.7);
   backdrop-filter: blur(12px);
@@ -231,15 +239,52 @@ button:hover {
   color: #0d0013;
 }
 
-@media (max-width: 900px) {
+/* =======================
+   TABLET
+======================= */
+@media (max-width: 1000px) {
+  .hero {
+    min-height: calc(100svh - 96px);
+  }
+
   .hero-box {
     grid-template-columns: 1fr;
     gap: 60px;
   }
 
   .hero-text h1 {
-    font-size: 2.5rem;
+    font-size: 2.6rem;
     letter-spacing: 4px;
+  }
+
+  .formulario {
+    padding: 40px;
+  }
+}
+
+/* =======================
+   MÓVIL
+======================= */
+@media (max-width: 600px) {
+  .hero-text h1 {
+    font-size: 2rem;
+    letter-spacing: 3px;
+  }
+
+  .hero-text p {
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+  }
+
+  .btn {
+    padding: 14px 24px;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+  }
+
+  .formulario {
+    padding: 32px;
   }
 }
 </style>
+
