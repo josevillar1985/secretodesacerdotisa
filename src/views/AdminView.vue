@@ -220,13 +220,12 @@ export default {
 
 
 <style scoped>
-/* Los estilos se mantienen iguales que el anterior */
-
-/* 🔹 1. Centrar el layout general */
+/* =======================
+   BASE
+======================= */
 .admin-page {
   background: #120016;
   min-height: 100vh;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -236,30 +235,37 @@ export default {
   padding: 120px 5% 80px;
   color: #ffd36a;
   max-width: 800px;
+  width: 100%;
   margin: 0 auto;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   position: relative;
 }
 
+/* =======================
+   LOGOUT
+======================= */
 .logout-top {
   position: absolute;
-  top: 40px;
-  right: 5%;
-  background: rgba(255, 138, 128, 0.1);
+  top: 30px;
+  right: 20px;
+  background: rgba(255, 138, 128, 0.12);
   border: 1px solid rgba(255, 138, 128, 0.4);
   color: #ff8a80;
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-size: 0.75rem;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.7rem;
   cursor: pointer;
   display: flex;
   align-items: center;
+  gap: 6px;
+  z-index: 10;
 }
 
+/* =======================
+   HEADER
+======================= */
 .admin-header {
   text-align: center;
   margin-bottom: 50px;
@@ -267,11 +273,18 @@ export default {
 
 .admin-header h1 {
   font-family: serif;
-  font-size: 2.8rem;
+  font-size: 2.6rem;
   letter-spacing: 4px;
   margin-bottom: 10px;
 }
 
+.admin-header p {
+  opacity: 0.85;
+}
+
+/* =======================
+   FORM
+======================= */
 .form-wrapper {
   width: 100%;
   display: flex;
@@ -297,56 +310,70 @@ export default {
   align-items: center;
 }
 
-.text-center {
-  text-align: center;
-}
-
 label {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 3px;
   margin-bottom: 12px;
   opacity: 0.7;
-}
-
-/* 🔹 2. Inputs centrados sin tocar estilos */
-input,
-textarea {
-  width: 100%;
-  max-width: 500px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 211, 106, 0.2);
-  padding: 15px;
-  color: #fff;
-  border-radius: 8px;
-  outline: none;
-
-  margin: 0 auto;
   text-align: center;
 }
 
+/* =======================
+   INPUTS
+======================= */
+input,
+textarea {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 211, 106, 0.25);
+  padding: 14px 16px;
+  color: #fff;
+  border-radius: 10px;
+  outline: none;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* =======================
+   UPLOAD
+======================= */
 .btn-subir {
   background: #ffd36a;
   color: #120016;
-  padding: 15px 30px;
-  border-radius: 10px;
+  padding: 14px 32px;
+  border-radius: 14px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.count {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+/* =======================
+   IMÁGENES
+======================= */
 .lista-fotos {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 14px;
+  width: 100%;
+  max-width: 520px;
+  margin-top: 28px;
 }
 
 .foto-item {
   position: relative;
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
   overflow: hidden;
   border: 2px solid rgba(255, 211, 106, 0.3);
 }
@@ -359,32 +386,43 @@ textarea {
 
 .remove-btn {
   position: absolute;
-  top: 0;
-  right: 0;
-  background: #ff5252;
+  top: 6px;
+  right: 6px;
+  background: rgba(255, 82, 82, 0.95);
   border: none;
   color: white;
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
   cursor: pointer;
+  font-size: 0.7rem;
 }
 
-/* 🔹 3. Botón final y mensaje centrados */
+/* =======================
+   BOTÓN FINAL
+======================= */
 .acciones-finales {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 18px;
+  margin-top: 10px;
 }
 
 .btn-principal {
   background: transparent;
   color: #ffd36a;
-  padding: 18px 60px;
+  padding: 16px 42px;
   border: 1px solid #ffd36a;
   border-radius: 50px;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
   cursor: pointer;
+}
+
+.btn-principal:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .btn-principal:hover:not(:disabled) {
@@ -392,9 +430,12 @@ textarea {
   color: #120016;
 }
 
+/* =======================
+   MENSAJES
+======================= */
 .status {
-  margin-top: 25px;
   text-align: center;
+  font-size: 0.9rem;
 }
 
 .success {
@@ -405,4 +446,41 @@ textarea {
   color: #ff8a80;
 }
 
+/* =======================
+   RESPONSIVE
+======================= */
+@media (max-width: 768px) {
+
+  .admin-container {
+    padding: 100px 20px 60px;
+  }
+
+  .admin-header h1 {
+    font-size: 2rem;
+    letter-spacing: 3px;
+  }
+
+  .admin-card {
+    padding: 30px 20px;
+  }
+
+  input,
+  textarea {
+    font-size: 0.9rem;
+    padding: 12px 14px;
+  }
+
+  .btn-principal {
+    width: 100%;
+    max-width: 360px;
+    padding: 14px;
+  }
+
+  .logout-top {
+    top: 16px;
+    right: 16px;
+    padding: 6px 12px;
+    font-size: 0.65rem;
+  }
+}
 </style>

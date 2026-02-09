@@ -212,11 +212,15 @@ export default {
 </script>
 
 <style scoped>
+/* =======================
+   BASE
+======================= */
 .list-admin {
   margin-top: 80px;
   max-width: 960px;
   margin-left: auto;
   margin-right: auto;
+  padding: 0 20px;
 }
 
 .titulo-principal {
@@ -233,14 +237,15 @@ export default {
   font-size: 1rem;
 }
 
-/* ===== LISTA EN COLUMNA (UNA ENCIMA DE OTRA) ===== */
-.grid {
+/* =======================
+   LISTA
+======================= */
+.lista {
   display: flex;
   flex-direction: column;
   gap: 40px;
 }
 
-/* ===== TARJETA GRANDE ===== */
 .celda {
   background: rgba(255, 211, 106, 0.06);
   border: 1px solid rgba(255, 211, 106, 0.25);
@@ -249,31 +254,35 @@ export default {
   text-align: center;
 }
 
-/* ===== TEXTO ===== */
+/* =======================
+   TEXTO
+======================= */
 .titulo-galeria {
   font-size: 1.6rem;
   margin-bottom: 10px;
 }
 
 .fecha {
-  font-size: 1rem;
+  font-size: 0.95rem;
   opacity: 0.7;
   margin-bottom: 22px;
 }
 
-/* ===== FOTOS ===== */
+/* =======================
+   FOTOS
+======================= */
 .fotos {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   gap: 14px;
-  flex-wrap: wrap;
+  justify-items: center;
   margin-bottom: 10px;
 }
 
 .fotos img {
-  width: 90px;
-  height: 90px;
-  border-radius: 16px;
+  width: 80px;
+  height: 80px;
+  border-radius: 14px;
   object-fit: cover;
   border: 1px solid rgba(255, 211, 106, 0.5);
 }
@@ -281,22 +290,25 @@ export default {
 .extra {
   display: block;
   margin-top: 6px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   opacity: 0.7;
 }
 
-/* ===== BOTONES ===== */
+/* =======================
+   BOTONES
+======================= */
 .acciones {
   display: flex;
   justify-content: center;
-  gap: 24px;
+  gap: 20px;
   margin-top: 26px;
+  flex-wrap: wrap;
 }
 
 .btn {
-  padding: 12px 34px;
+  padding: 12px 32px;
   border-radius: 40px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   letter-spacing: 2px;
   cursor: pointer;
   border: none;
@@ -319,7 +331,9 @@ export default {
   color: #ffd36a;
 }
 
-/* ===== OVERLAY ===== */
+/* =======================
+   OVERLAY
+======================= */
 .overlay {
   position: fixed;
   inset: 0;
@@ -329,12 +343,15 @@ export default {
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
-  padding: 80px 0;
+  padding: 80px 16px;
 }
 
-/* ===== DIALOG ===== */
+/* =======================
+   DIALOG
+======================= */
 .dialog {
-  width: 460px;
+  width: 100%;
+  max-width: 460px;
   background: #120016;
   border-radius: 26px;
   border: 1px solid rgba(255, 211, 106, 0.35);
@@ -351,14 +368,16 @@ export default {
   width: 100%;
   margin-bottom: 14px;
   padding: 14px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 211, 106, 0.3);
   color: white;
   border-radius: 10px;
 }
 
-/* ===== EDITAR FOTOS ===== */
+/* =======================
+   EDITAR FOTOS
+======================= */
 .fotos-editar {
   text-align: center;
   margin: 20px 0;
@@ -369,33 +388,35 @@ export default {
 }
 
 .foto-edit img {
-  width: 80px;
-  height: 80px;
-  border-radius: 16px;
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
   object-fit: cover;
 }
 
 .foto-edit button {
   position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 22px;
-  height: 22px;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #ff5252;
   color: white;
   border: none;
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
 }
 
-/* ===== BOTÓN SUBIR ===== */
+/* =======================
+   SUBIR
+======================= */
 .btn-subir-editar {
   display: inline-block;
   margin-top: 18px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   letter-spacing: 2px;
-  padding: 10px 26px;
+  padding: 10px 24px;
   border-radius: 30px;
   background: transparent;
   border: 1px dashed #ffd36a;
@@ -403,11 +424,48 @@ export default {
   cursor: pointer;
 }
 
-/* ===== ACCIONES DIALOG ===== */
+/* =======================
+   DIALOG ACCIONES
+======================= */
 .dialog-acciones {
   display: flex;
   justify-content: space-between;
+  gap: 14px;
   margin-top: 25px;
 }
 
+/* =======================
+   RESPONSIVE
+======================= */
+@media (max-width: 768px) {
+
+  .titulo-principal {
+    font-size: 1.6rem;
+  }
+
+  .celda {
+    padding: 26px 20px;
+  }
+
+  .titulo-galeria {
+    font-size: 1.3rem;
+  }
+
+  .acciones {
+    gap: 14px;
+  }
+
+  .btn {
+    padding: 10px 26px;
+    font-size: 0.75rem;
+  }
+
+  .dialog {
+    padding: 24px 20px;
+  }
+
+  .dialog-acciones {
+    flex-direction: column;
+  }
+}
 </style>
