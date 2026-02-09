@@ -9,10 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/galerias")
+@CrossOrigin
 public class GaleriaController {
 
     private final GaleriaRepository repository;
@@ -23,13 +23,22 @@ public class GaleriaController {
         this.mapper = mapper;
     }
 
-    // ================= GET =================
+    // ================= GET ALL =================
     @GetMapping
     public List<GaleriaDTO> getAll() {
-        return repository.findAll()
+        return repository.findAllWithFotos()
                 .stream()
                 .map(mapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    // ================= GET BY ID =================
+    @GetMapping("/{id}")
+    public ResponseEntity<GaleriaDTO> getById(@PathVariable Long id) {
+        return repository.findById(id)
+                .map(mapper::toDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     // ================= POST =================
@@ -61,7 +70,7 @@ public class GaleriaController {
                     existing.setDescripcion(dto.getDescripcion());
                     existing.setFecha(dto.getFecha());
 
-                    // 🟢 fotos (reemplazo total)
+                    // 🟢 reemplazo de fotos
                     if (dto.getFotos() != null) {
 
                         existing.getFotos().clear();
@@ -80,10 +89,11 @@ public class GaleriaController {
 
     // ================= DELETE =================
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (!repository.existsById(id)) {
-            throw new IllegalArgumentException("Galería no existe.");
+            return ResponseEntity.notFound().build();
         }
         repository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
